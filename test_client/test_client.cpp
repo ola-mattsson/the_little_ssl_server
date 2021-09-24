@@ -1,8 +1,6 @@
 #include <iostream>
 #include "curl_wrapper.h"
-#include <utililty.h> // ich
-#include <algorithm>
-#include <compression.h>
+#include <utililty.h>
 
 
 void test_GET() {

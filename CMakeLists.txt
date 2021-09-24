@@ -10,8 +10,8 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
 endif()
 
 # put the html next to the binary for easy reading
-configure_file(index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
-configure_file(index_big.html ${CMAKE_BINARY_DIR}/index_big.html COPYONLY)
+configure_file(files/index.html ${CMAKE_BINARY_DIR}/index.html COPYONLY)
+configure_file(files/index_big.html ${CMAKE_BINARY_DIR}/index_big.html COPYONLY)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
@@ -20,22 +20,20 @@ find_package(Boost REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(CURL REQUIRED)
 
-add_library(util INTERFACE)
-add_library(util::util ALIAS util)
-target_include_directories(util INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(ssl_http_server)
 target_sources(ssl_http_server
         PRIVATE
         main.cpp
-        ssl_server.cpp
-        ssl_context.cpp
         )
+
 target_link_libraries(ssl_http_server
         PRIVATE
         Boost::boost
-        OpenSSL::SSL
         ZLIB::ZLIB
+        SHS::SSL
         )
 
 add_subdirectory(test_client)
+add_subdirectory(SSL)
+add_subdirectory(util)

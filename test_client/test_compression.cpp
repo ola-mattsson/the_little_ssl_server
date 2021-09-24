@@ -1,5 +1,7 @@
 #include <compression.h>
 #include <iostream>
+#include <vector>
+#include "compression.h"
 
 void test(int size) {
     static uint32_t CHUNK_ = 19;

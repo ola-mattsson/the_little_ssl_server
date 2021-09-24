@@ -2,7 +2,7 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <mutex>
-#include "socket_descriptor.h"
+#include "../socket_descriptor.h"
 
 class SSL_context {
     using ssl_context_ptr = std::unique_ptr<SSL_CTX, void (*)(SSL_CTX *)>;
