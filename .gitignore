@@ -1,2 +1,4 @@
 cmake-*
 
+/certs/
+/test_client/large-file.json
