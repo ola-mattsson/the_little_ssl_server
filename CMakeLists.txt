@@ -19,7 +19,7 @@ find_package(OpenSSL REQUIRED)
 find_package(Boost REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(CURL REQUIRED)
-
+find_package(Threads REQUIRED)
 
 add_executable(ssl_http_server)
 target_sources(ssl_http_server
@@ -32,6 +32,7 @@ target_link_libraries(ssl_http_server
         Boost::boost
         ZLIB::ZLIB
         SHS::SSL
+        Threads::Threads
         )
 
 add_subdirectory(test_client)

@@ -1,34 +1,31 @@
 #pragma once
 
-#include <gethostuuid.h>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <openssl/ssl.h>
-#include <uuid/uuid.h>
 #include <cstring>
 
 namespace actions {
+
     static void create_something(SSL *ssl, char *inp __attribute__((unused))) {
-        char uuid_str[37];
-        uuid_t uuid;
-        static char response[1024];
-        static char json[1024];
 
-        uuid_generate(uuid);
-        uuid_unparse(uuid, uuid_str);
+        boost::uuids::random_generator generator;
+        std::string uuid_str = boost::uuids::to_string(generator());
 
-        snprintf(json, 1024, R"({"id":"%s"})", uuid_str);
+        std::stringstream ss;
+        ss << R"({"id":")" << uuid_str << R"("})";
+        std::string json = ss.str();
 
-        snprintf(
-            response,
-            1024,
+        std::stringstream ss1;
+        ss1 <<
             "HTTP/1.1 201 Created\r\n"
             "Content-Type: application/json\r\n"
-            "Content-Length: %ld\r\n"
-            "\r\n%s",
-            strlen(json),
-            json
-        );
+            "Content-Length: " << json.size() << "\r\n"
+            "\r\n" << json << "\r\n";
 
-        SSL_write(ssl, response, static_cast<int>(strlen(response)));
+        std::string response = ss1.str();
+        SSL_write(ssl, response.c_str(), static_cast<int>(response.size()));
     }
 
     static void update_something(SSL *ssl, char *inp __attribute__((unused))) {
@@ -58,4 +55,4 @@ namespace actions {
 
         SSL_write(ssl, response, static_cast<int>(strlen(response)));
     }
-};
+}

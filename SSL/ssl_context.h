@@ -2,6 +2,7 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 #include <mutex>
+#include <iostream>
 #include "../socket_descriptor.h"
 
 class SSL_context {
@@ -11,12 +12,14 @@ public:
 
     using ssl_ptr = std::unique_ptr<SSL, void (*)(SSL *)>;
 
-    SSL_context() : ctx(SSL_CTX_new(SSLv23_server_method()), SSL_CTX_free) {
+    SSL_context() : ctx(SSL_CTX_new(TLS_server_method()), SSL_CTX_free) {
 
         init_openssl();
 
         if (ctx == nullptr) {
-            perror("SSL_CTX_new");
+//            auto * thing = SSL_CTX_new(TLS_server_method());
+//            std::cout << (thing ? "got thing" : "no thing\n");
+            perror("SSL_CTX_new MEH!");
             ERR_print_errors_fp(stderr);
             exit(EXIT_FAILURE);
         }
@@ -42,6 +45,7 @@ public:
 
         /* Set the key and cert */
         if (SSL_CTX_use_certificate_file(ctx.get(), cert, SSL_FILETYPE_PEM) <= 0) {
+            std::cout << "---------in configure error------------\n";
             ERR_print_errors_fp(stderr);
             return false;
         }

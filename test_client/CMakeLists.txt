@@ -11,6 +11,7 @@ target_link_libraries(test_client
         util::util
         CURL::libcurl
         OpenSSL::SSL
+        ZLIB::ZLIB
         OpenSSL::Crypto
         Boost::boost
         )
@@ -26,6 +27,7 @@ target_link_libraries(test_compression
         PRIVATE
         util::util
         CURL::libcurl
+        ZLIB::ZLIB
         OpenSSL::SSL
         OpenSSL::Crypto
         Boost::boost

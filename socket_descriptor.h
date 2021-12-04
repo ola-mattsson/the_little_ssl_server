@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <cstdio>
 #include <cstdlib>
+#include <sys/cdefs.h>
+#include <netinet/in.h>
 
 
 struct socket_fd {
@@ -18,19 +20,14 @@ public:
 
     explicit socket_fd(socket_type fd_) : fd(fd_) {}
 
-    // don't return by copy, it will delete the
-    // original and close the socket
     explicit socket_fd(const socket_fd &) = delete;
 
-    // but it can be moved
     socket_fd(socket_fd && other) noexcept {
         fd = other.fd;
         other.fd = -1;
     }
 
-    // move assignment
     socket_fd &operator=(socket_fd &&other) noexcept {
-        // other was a rvalue, but not anymore
         *this = other;
         other.fd = -1;
         return *this;

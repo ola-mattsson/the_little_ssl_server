@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <cassert>
 
 /*
  * easy to use compression algorithms.

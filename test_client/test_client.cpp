@@ -5,7 +5,7 @@
 
 void test_GET() {
 
-    CURL_handle curl;
+    CURL_handle curl(true);
     if (curl.initialised()) {
 
         curl.set_read_headers(true);
@@ -98,7 +98,7 @@ void quit() {
 int main() {
     const curl_initialise curl_initialise;
 
-    for (int i(0); i < 1000; ++i) {
+    for (int i(0); i < 1; ++i) {
         test_GET();
         test_POST();
     }
